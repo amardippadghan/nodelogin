@@ -34,16 +34,26 @@ app.post("/api/register", async (req, res) => {
   await user.save();
   res.send(user);
 });
+app.get("/api/users/:id", async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  if (user) {
+    res.send(user);
+  } else {
+    res.send("User not found");
+  }
+});
 
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email, password });
   if (user) {
-    res.send("Verified");
+    res.send(user);
   } else {
     res.send("Invalid email or password");
   }
 });
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
